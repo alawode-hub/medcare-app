@@ -10,6 +10,7 @@ export default async function DoctorPage() {
   if (user.role !== "doctor") redirect("/");
 
   await connectDB();
+  
   const appointments = await Appointment.find({ doctorId: user.doctorId }).sort({ date: 1 }).lean();
   const pending = appointments.filter((a: any) => a.status === "pending").length;
   const accepted = appointments.filter((a: any) => a.status === "confirmed").length;

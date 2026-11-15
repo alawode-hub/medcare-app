@@ -1,6 +1,6 @@
 "use client";
 import { useState, Suspense, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import DoctorCard from "../components/DoctorCard";
 import { doctors } from "../data/doctors";
 
@@ -10,13 +10,27 @@ function clean(text: string) {
 
 function DoctorsContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [search, setSearch] = useState("");
   const [specialty, setSpecialty] = useState("All specialties");
+  const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    if (!document.cookie.includes("medcare_user=")) {
+      router.replace("/register");
+    } else {
+      setChecking(false);
+    }
+  }, [router]);
 
   useEffect(() => {
     setSearch(searchParams.get("search") || "");
     setSpecialty(searchParams.get("specialty") || "All specialties");
   }, [searchParams]);
+
+  if (checking) {
+    return <div className="max-w-6xl mx-auto px-5 py-10 text-slate-400">Checking your account...</div>;
+  }
 
   const filtered = doctors.filter((d) => {
     const matchName = clean(d.name).includes(clean(search));
@@ -25,11 +39,11 @@ function DoctorsContent() {
   });
 
   return (
+    <div className="bg-slate-900 min-h-screen">
     <div className="max-w-6xl mx-auto px-5 py-10">
       <p className="text-teal-400 text-sm font-bold tracking-widest">ALL DOCTORS</p>
       <h1 className="text-3xl font-bold mt-1 text-white">Find a doctor</h1>
       <p className="text-slate-400 mt-2">All doctors, with next open time.</p>
-
       <div className="flex flex-col sm:flex-row gap-3 mt-6">
         <input
           value={search}
@@ -47,16 +61,15 @@ function DoctorsContent() {
           <option>Gynecologist</option>
         </select>
       </div>
-
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
         {filtered.map((d) => (
           <DoctorCard key={d.id} doctor={d} />
         ))}
       </div>
-
       {filtered.length === 0 && (
         <p className="text-slate-400 text-center mt-10">No doctor found for &quot;{search}&quot;</p>
       )}
+    </div>
     </div>
   );
 }

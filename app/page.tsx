@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import DoctorCard from "./components/DoctorCard";
 import { doctors } from "./data/doctors";
@@ -20,6 +20,13 @@ function clean(text: string) {
 export default function Home() {
   const [search, setSearch] = useState("");
   const [specialty, setSpecialty] = useState("All specialties");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setIsLoggedIn(document.cookie.includes("medcare_user="));
+  }, []);
+
+  const doctorsLink = isLoggedIn ? "/doctors" : "/register";
 
   const isSearching = search !== "" || specialty !== "All specialties";
 
@@ -30,6 +37,7 @@ export default function Home() {
   });
 
   return (
+    <div className="bg-slate-900 min-h-screen">
     <div className="max-w-6xl mx-auto px-5">
       {/* HERO - 1 col phone, 2 cols laptop */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-8 md:py-12">
@@ -38,7 +46,7 @@ export default function Home() {
           <h1 className="text-3xl sm:text-5xl font-bold mt-3 leading-tight text-white">Quality Healthcare,<br/>Made Simple</h1>
           <p className="text-slate-400 mt-4 text-sm sm:text-base">Find a trusted doctor, see real open times and book your visit in under a minute. No phone calls and no waiting on hold.</p>
           <div className="flex flex-col sm:flex-row gap-3 mt-6">
-            <Link href="/doctors" className="bg-teal-400 text-slate-900 font-bold px-5 py-3 rounded-lg text-sm text-center">Find a Doctor →</Link>
+            <Link href={doctorsLink} className="bg-teal-400 text-slate-900 font-bold px-5 py-3 rounded-lg text-sm text-center">Find a Doctor →</Link>
             <button className="bg-slate-800 px-5 py-3 rounded-lg text-sm font-bold border border-slate-700 text-white">How it works</button>
           </div>
         </div>
@@ -103,7 +111,7 @@ export default function Home() {
           <div className="pb-10">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
               <div><p className="text-teal-400 text-sm font-bold tracking-widest">FEATURED DOCTORS</p><h2 className="text-2xl font-bold text-white">Experienced and ready to help</h2></div>
-              <Link href="/doctors" className="text-sm text-teal-400 font-bold shrink-0">See all doctors →</Link>
+              <Link href={doctorsLink} className="text-sm text-teal-400 font-bold shrink-0">See all doctors →</Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
               {doctors.slice(3,6).map((d) => <DoctorCard key={d.id} doctor={d} />)}
@@ -111,6 +119,7 @@ export default function Home() {
           </div>
         </>
       )}
+    </div>
     </div>
   );
 }

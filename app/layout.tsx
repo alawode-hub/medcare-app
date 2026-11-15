@@ -17,13 +17,10 @@ async function Header() {
         <span className="w-8 h-8 bg-teal-400 rounded-lg flex items-center justify-center text-slate-900 text-xl font-bold">+</span>
         <span>Med<span className="text-teal-400">Care</span></span>
       </Link>
-
-      {/* LAPTOP - show full nav */}
       <nav className="hidden md:flex gap-5 items-center">
         <Link href="/" className="text-teal-400 text-sm">Home</Link>
         <Link href="/doctors" className="text-slate-300 text-sm">Doctors</Link>
         <Link href="/dashboard" className="text-slate-300 text-sm">Appointments</Link>
-
         {user ? (
           <>
             <span className="text-slate-300 text-sm">Hi, {user.name.split(" ")[0]}</span>
@@ -39,8 +36,6 @@ async function Header() {
           </>
         )}
       </nav>
-
-      {/* PHONE - hamburger */}
       <MobileMenu user={user} />
     </header>
   );
@@ -48,8 +43,8 @@ async function Header() {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="bg-slate-900 min-h-screen">
+    <html lang="en" className="bg-slate-900">
+      <body className="bg-slate-900 min-h-screen text-white">
         <Suspense fallback={<div className="h-16" />}>
           <Header />
         </Suspense>
