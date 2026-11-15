@@ -1,38 +1,35 @@
 "use client";
-import { useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
+import { registerUser } from "../../actions/user";
 
 export default function RegisterPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [state, formAction, isPending] = useActionState(registerUser, null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [localError, setLocalError] = useState("");
 
-  async function handleSubmit(e: any) {
-    e.preventDefault();
-    setError("");
+  // If register success, go login after small delay so user see success message
+  useEffect(() => {
+    if (state?.success) {
+      const t = setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
+      return () => clearTimeout(t);
+    }
+  }, [state?.success]);
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    const form = e.currentTarget;
+    const password = (form.elements.namedItem("password") as HTMLInputElement)?.value;
     if (password !== confirmPassword) {
-      setError("Passwords no match");
+      e.preventDefault();
+      setLocalError("Passwords no match");
       return;
     }
-    setLoading(true);
-    const res = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
-    });
-    const data = await res.json();
-    setLoading(false);
-    if (!res.ok) {
-      setError(data.error || "Register failed");
-      return;
-    }
-    window.location.href = "/login";
+    setLocalError("");
   }
 
   return (
@@ -41,18 +38,16 @@ export default function RegisterPage() {
         <h1 className="text-white text-2xl font-bold text-center">Create Account</h1>
         <p className="text-slate-400 text-sm text-center mt-1">Join MedCare in a minute</p>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-6">
+        <form action={formAction} onSubmit={handleSubmit} className="flex flex-col gap-4 mt-6">
           <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            name="name"
             placeholder="Full Name"
             required
             className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg outline-none"
           />
           <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="email"
             placeholder="Email"
             required
             className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg outline-none"
@@ -62,8 +57,7 @@ export default function RegisterPage() {
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
               placeholder="Create password"
               required
               className="w-full bg-slate-900 border border-slate-700 text-white p-3 pr-12 rounded-lg outline-none"
@@ -96,13 +90,14 @@ export default function RegisterPage() {
             </button>
           </div>
 
-          {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+          {(localError || state?.error) && <p className="text-red-400 text-sm text-center">{localError || state?.error}</p>}
+          {state?.success && <p className="text-green-400 text-sm text-center">{state.success}</p>}
 
           <button
-            disabled={loading}
+            disabled={isPending}
             className="w-full bg-teal-400 text-slate-900 font-bold p-3 rounded-lg"
           >
-            {loading ? "Creating..." : "Create Account"}
+            {isPending ? "Creating..." : "Create Account"}
           </button>
         </form>
 
