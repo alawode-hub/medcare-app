@@ -15,13 +15,20 @@ function DoctorsContent() {
   const [specialty, setSpecialty] = useState("All specialties");
   const [checking, setChecking] = useState(true);
 
+  
   useEffect(() => {
-    if (!document.cookie.includes("medcare_user=")) {
-      router.replace("/register");
-    } else {
-      setChecking(false);
-    }
-  }, [router]);
+  fetch("/api/me")
+    .then((r) => r.json())
+    .then((d) => {
+      if (!d.loggedIn) {
+        router.replace("/register");
+      } else {
+        setChecking(false);
+      }
+    })
+    .catch(() => router.replace("/register"));
+    }, [router]);
+
 
   useEffect(() => {
     setSearch(searchParams.get("search") || "");

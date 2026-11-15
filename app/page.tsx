@@ -22,9 +22,14 @@ export default function Home() {
   const [specialty, setSpecialty] = useState("All specialties");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  
   useEffect(() => {
-    setIsLoggedIn(document.cookie.includes("medcare_user="));
-  }, []);
+  fetch("/api/me")
+    .then((r) => r.json())
+    .then((d) => setIsLoggedIn(d.loggedIn))
+    .catch(() => setIsLoggedIn(false));
+    }, []);
+
 
   const doctorsLink = isLoggedIn ? "/doctors" : "/register";
 
