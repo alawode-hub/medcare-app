@@ -115,7 +115,7 @@ export default function Home() {
 
           <div className="pb-10">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-              <div><p className="text-teal-400 text-sm font-bold tracking-widest">FEATURED DOCTORS</p><h2 className="text-2xl font-bold text-white">{isLoggedIn ? "All doctors" : "Experienced and ready to help"}</h2></div>
+              <div><p className="text-teal-400 text-sm font-bold tracking-widest">FEATURED DOCTORS</p>{doctors.map((d) => <DoctorCard key={d.id} doctor={d} />)}</div>
               <Link href={doctorsLink} className="text-sm text-teal-400 font-bold shrink-0">See all doctors →</Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">

@@ -15,20 +15,16 @@ function DoctorsContent() {
   const [specialty, setSpecialty] = useState("All specialties");
   const [checking, setChecking] = useState(true);
 
-  
-  useEffect(() => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
   fetch("/api/me")
     .then((r) => r.json())
-    .then((d) => {
-      if (!d.loggedIn) {
-        router.replace("/register");
-      } else {
-        setChecking(false);
-      }
-    })
-    .catch(() => router.replace("/register"));
-    }, [router]);
-
+    .then((d) => setIsLoggedIn(d.loggedIn))
+    .catch(() => setIsLoggedIn(false));
+      }, []);
+      
 
   useEffect(() => {
     setSearch(searchParams.get("search") || "");
