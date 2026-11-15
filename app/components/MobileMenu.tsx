@@ -8,7 +8,6 @@ export default function MobileMenu({ user }: any) {
 
   return (
     <div className="md:hidden">
-      {/* Hamburger button - only for phone */}
       <button
         onClick={() => setOpen(!open)}
         className="text-white text-2xl px-2"

@@ -11,7 +11,6 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [localError, setLocalError] = useState("");
 
-  // If register success, go login after small delay so user see success message
   useEffect(() => {
     if (state?.success) {
       const t = setTimeout(() => {
@@ -33,78 +32,78 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="max-w-md mx-auto px-5 py-10">
-      <div className="bg-slate-800 rounded-2xl p-6">
-        <h1 className="text-white text-2xl font-bold text-center">Create Account</h1>
-        <p className="text-slate-400 text-sm text-center mt-1">Join MedCare in a minute</p>
+    <div className="bg-slate-900 min-h-screen">
+      <main className="max-w-md mx-auto px-5 py-10">
+        <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700">
+          <h1 className="text-white text-2xl font-bold text-center">Create Account</h1>
+          <p className="text-slate-400 text-sm text-center mt-1">Join MedCare in a minute</p>
 
-        <form action={formAction} onSubmit={handleSubmit} className="flex flex-col gap-4 mt-6">
-          <input
-            name="name"
-            placeholder="Full Name"
-            required
-            className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg outline-none"
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            required
-            className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg outline-none"
-          />
-
-          {/* PASSWORD - REAL EYE ICON */}
-          <div className="relative">
+          <form action={formAction} onSubmit={handleSubmit} className="flex flex-col gap-4 mt-6">
             <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="Create password"
+              name="name"
+              placeholder="Full Name"
               required
-              className="w-full bg-slate-900 border border-slate-700 text-white p-3 pr-12 rounded-lg outline-none"
+              className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg outline-none"
             />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3 text-slate-400 hover:text-teal-400"
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          </div>
-
-          {/* CONFIRM PASSWORD - REAL EYE ICON */}
-          <div className="relative">
             <input
-              type={showConfirm ? "text" : "password"}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Confirm password"
+              type="email"
+              name="email"
+              placeholder="Email"
               required
-              className="w-full bg-slate-900 border border-slate-700 text-white p-3 pr-12 rounded-lg outline-none"
+              className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg outline-none"
             />
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Create password"
+                required
+                className="w-full bg-slate-900 border border-slate-700 text-white p-3 pr-12 rounded-lg outline-none"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-3 text-slate-400 hover:text-teal-400"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+
+            <div className="relative">
+              <input
+                type={showConfirm ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm password"
+                required
+                className="w-full bg-slate-900 border border-slate-700 text-white p-3 pr-12 rounded-lg outline-none"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirm(!showConfirm)}
+                className="absolute right-3 top-3 text-slate-400 hover:text-teal-400"
+              >
+                {showConfirm ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+
+            {(localError || state?.error) && <p className="text-red-400 text-sm text-center">{localError || state?.error}</p>}
+            {state?.success && <p className="text-green-400 text-sm text-center">{state.success}</p>}
+
             <button
-              type="button"
-              onClick={() => setShowConfirm(!showConfirm)}
-              className="absolute right-3 top-3 text-slate-400 hover:text-teal-400"
+              disabled={isPending}
+              className="w-full bg-teal-400 text-slate-900 font-bold p-3 rounded-lg"
             >
-              {showConfirm ? <EyeOff size={20} /> : <Eye size={20} />}
+              {isPending ? "Creating..." : "Create Account"}
             </button>
-          </div>
+          </form>
 
-          {(localError || state?.error) && <p className="text-red-400 text-sm text-center">{localError || state?.error}</p>}
-          {state?.success && <p className="text-green-400 text-sm text-center">{state.success}</p>}
-
-          <button
-            disabled={isPending}
-            className="w-full bg-teal-400 text-slate-900 font-bold p-3 rounded-lg"
-          >
-            {isPending ? "Creating..." : "Create Account"}
-          </button>
-        </form>
-
-        <p className="text-slate-400 text-sm text-center mt-4">
-          Already have an account? <Link href="/login" className="text-teal-400 font-bold">Login</Link>
-        </p>
-      </div>
-    </main>
+          <p className="text-slate-400 text-sm text-center mt-4">
+            Already have an account? <Link href="/login" className="text-teal-400 font-bold">Login</Link>
+          </p>
+        </div>
+      </main>
+    </div>
   );
 }
