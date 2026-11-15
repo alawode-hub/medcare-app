@@ -5,8 +5,8 @@ import DoctorCard from "./components/DoctorCard";
 import { doctors } from "./data/doctors";
 
 const specialties = [
-  ["General Practitioner", "Check-ups and everyday care", "2 doctors", "🩺"],
-  ["Dentist", "Cleanings, fillings and braces", "2 doctors", "🦷"],
+  ["General Practitioner", "Check-ups and everyday care", "1 doctor", "🩺"],
+  ["Dentist", "Cleanings, fillings and braces", "1 doctor", "🦷"],
   ["Cardiologist", "Heart health and blood pressure", "1 doctor", "❤️"],
   ["Dermatologist", "Skin, hair and nails", "1 doctor", "💧"],
   ["Pediatrician", "Care for babies and children", "1 doctor", "😊"],
