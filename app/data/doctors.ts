@@ -1,7 +1,7 @@
 export const doctors = [
   {
     id: "1",
-    name: "Dr. Adisa Chineke",
+    name: "Dr. Bam Adams",
     specialty: "General Practitioner",
     experience: 12,
     about: "Check-ups, everyday illness and preventive care for the whole family.",
