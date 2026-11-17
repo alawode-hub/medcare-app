@@ -22,6 +22,11 @@ export async function bookAppointment(formData: FormData) {
     return { error: "Pick date and time first" };
   }
 
+  // Reason must not be empty - no min length, type many or small, e go enter
+  if (!reason.trim()) {
+    return { error: "Abeg type reason for visit - wetin dey worry you?" };
+  }
+
   const today = new Date().toISOString().split("T")[0];
   if (date < today) {
     return { error: "You no fit book past date" };
@@ -49,7 +54,7 @@ export async function bookAppointment(formData: FormData) {
     specialty,
     date,
     time,
-    reason,
+    reason: reason.trim(),
     status: "pending",
   });
 
@@ -153,6 +158,10 @@ export async function updateAppointment(formData: FormData) {
     return { error: "Pick date and time first" };
   }
 
+  if (!reason.trim()) {
+    return { error: "Abeg type reason for visit - wetin dey worry you?" };
+  }
+
   const today = new Date().toISOString().split("T")[0];
   if (date < today) {
     return { error: "You no fit pick past date" };
@@ -180,7 +189,7 @@ export async function updateAppointment(formData: FormData) {
 
   appt.date = date;
   appt.time = time;
-  appt.reason = reason;
+  appt.reason = reason.trim();
   await appt.save();
 
   revalidatePath("/dashboard");

@@ -119,8 +119,9 @@ export default function DoctorDetail({ params }: { params: Promise<{ id: string 
               );
             })}
           </div>
-          <label className="block text-sm font-bold mt-5 mb-2 text-white">Reason for visit (optional)</label>
-          <textarea name="reason" placeholder="e.g I have tooth pain..." rows={2} className="w-full bg-slate-900 p-3 rounded-xl text-sm outline-none border border-slate-700 text-white" />
+          <label className="block text-sm font-bold mt-5 mb-2 text-white">Reason for visit *</label>
+          <textarea name="reason" required placeholder="e.g I have tooth pain..." rows={2} className="w-full bg-slate-900 p-3 rounded-xl text-sm outline-none border border-slate-700 text-white" />
+          <p className="text-slate-500 text-xs mt-1">* Required - Doctor need to know why you dey come</p>
           <button disabled={!selected || loading} className="w-full bg-teal-400 text-slate-900 font-bold py-3 rounded-xl mt-6 text-sm disabled:opacity-50">
             {loading ? "Booking..." : selected ? `Confirm Booking - ${date}, ${selected}` : "Select a time to Book"}
           </button>
