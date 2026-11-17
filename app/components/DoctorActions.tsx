@@ -4,7 +4,7 @@ import { updateAppointmentStatus } from "@/actions/appointment";
 export default function DoctorActions({ id, status }: { id: string; status: string }) {
   const handleReject = async (e: React.FormEvent) => {
     e.preventDefault();
-    const yes = window.confirm("Are you sure you want to REJECT this appointment? This patient will see it as Rejected.");
+    const yes = window.confirm("Are you sure you want to REJECT this appointment? The patient will see it as Rejected.");
     if (!yes) return;
 
     const formData = new FormData();
@@ -22,7 +22,6 @@ export default function DoctorActions({ id, status }: { id: string; status: stri
             <input type="hidden" name="status" value="confirmed" />
             <button className="bg-teal-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-sm">Accept</button>
           </form>
-
           <form onSubmit={handleReject}>
             <button className="bg-red-500 text-white font-bold px-4 py-2 rounded-lg text-sm">Reject</button>
           </form>
@@ -36,7 +35,6 @@ export default function DoctorActions({ id, status }: { id: string; status: stri
             <input type="hidden" name="status" value="completed" />
             <button className="bg-green-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-sm">Mark as Done</button>
           </form>
-
           <form onSubmit={handleReject}>
             <button className="bg-red-500 text-white font-bold px-4 py-2 rounded-lg text-sm">Reject</button>
           </form>
