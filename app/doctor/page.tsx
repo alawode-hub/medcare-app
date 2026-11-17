@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import Appointment from "@/models/Appointment";
-import { updateAppointmentStatus } from "@/actions/appointment";
+import DoctorActions from "../components/DoctorActions";
 
 export default async function DoctorPage() {
   const user = await getCurrentUser();
@@ -11,8 +11,7 @@ export default async function DoctorPage() {
 
   await connectDB();
 
-  // Clean name: "Dr. Bam Adams" -> "bam adams", "Bam Adams" -> "bam adams"
-  // So booking with doctorName go match doctor account even if doctorId no match
+  
   const clean = (n: string) => n.toLowerCase().replace("dr. ", "").replace("dr ", "").trim();
   const myName = clean(user.name);
 
@@ -54,38 +53,7 @@ export default async function DoctorPage() {
                 {a.status === "pending" ? "WAITING FOR REVIEW" : a.status === "confirmed" ? "ACCEPTED" : a.status === "completed" ? "COMPLETED" : "REJECTED"}
               </span>
             </div>
-            <div className="flex gap-2 items-start shrink-0">
-              {a.status === "pending" && (
-                <>
-                  <form action={updateAppointmentStatus}>
-                    <input type="hidden" name="id" value={a._id.toString()} />
-                    <input type="hidden" name="status" value="confirmed" />
-                    <button className="bg-teal-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-sm">Accept</button>
-                  </form>
-                  <form action={updateAppointmentStatus}>
-                    <input type="hidden" name="id" value={a._id.toString()} />
-                    <input type="hidden" name="status" value="cancelled" />
-                    <button className="bg-red-500 text-white font-bold px-4 py-2 rounded-lg text-sm">Reject</button>
-                  </form>
-                </>
-              )}
-              {a.status === "confirmed" && (
-                <>
-                  <form action={updateAppointmentStatus}>
-                    <input type="hidden" name="id" value={a._id.toString()} />
-                    <input type="hidden" name="status" value="completed" />
-                    <button className="bg-green-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-sm">Mark as Done</button>
-                  </form>
-                  <form action={updateAppointmentStatus}>
-                    <input type="hidden" name="id" value={a._id.toString()} />
-                    <input type="hidden" name="status" value="cancelled" />
-                    <button className="bg-red-500 text-white font-bold px-4 py-2 rounded-lg text-sm">Reject</button>
-                  </form>
-                </>
-              )}
-              {a.status === "cancelled" && <p className="text-red-300 text-sm font-bold px-2 py-2">Rejected</p>}
-              {a.status === "completed" && <p className="text-green-300 text-sm font-bold px-2 py-2">Done</p>}
-            </div>
+            <DoctorActions id={a._id.toString()} status={a.status} />
           </div>
         ))}
       </div>
