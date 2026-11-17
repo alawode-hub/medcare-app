@@ -6,6 +6,16 @@ import { connectDB } from "../lib/mongodb";
 import User from "../models/User";
 import { getCurrentUser } from "../lib/auth";
 
+const staticDoctors = [
+  { name: "Dr. Bam Adams", specialty: "General Practitioner" },
+  { name: "Dr. Bayo Marcus", specialty: "Cardiologist" },
+  { name: "Dr. Jerry Dotun", specialty: "Dermatologist" },
+  { name: "Dr. Felix Ade", specialty: "Pediatrician" },
+  { name: "Dr. Fatima Ajibade", specialty: "Gynecologist" },
+  { name: "Dr. Shola Adeniji", specialty: "Dentist" },
+];
+
+
 async function checkAdmin() {
   const user = await getCurrentUser();
   if (!user || user.role !== "admin") throw new Error("Not admin");
@@ -35,7 +45,6 @@ export async function addDoctor(formData: FormData) {
     role: "doctor",
     specialty,
   });
-  // Give doctor him own doctorId so him appointments go match
   newDoctor.doctorId = newDoctor._id.toString();
   await newDoctor.save();
 
@@ -51,4 +60,39 @@ export async function deleteUser(userId: string) {
   await User.findByIdAndDelete(userId);
   revalidatePath("/admin");
   return { success: true };
+}
+
+// OPTION C: Move 6 static doctors enter DB once
+export async function seedDoctors() {
+  await connection();
+  await checkAdmin();
+  await connectDB();
+
+  let added = 0;
+  const hashed = await bcrypt.hash("doctor123", 10);
+
+  for (const d of staticDoctors) {
+    const cleanName = d.name.replace(/^Dr\.\s*/i, "").trim();
+    // Make email from name: e.g "Bam Adams" -> "bam.adams@medcare.com"
+    const email = `${cleanName.toLowerCase().replace(/[^a-z]+/g, ".").replace(/^\.|\.$/g, "")}@medcare.com`;
+    const exists = await User.findOne({ email });
+    if (exists) continue;
+    // Also check by name, make we no duplicate
+    const existsByName = await User.findOne({ name: d.name });
+    if (existsByName) continue;
+
+    const newDoctor = await User.create({
+      name: d.name,
+      email,
+      password: hashed,
+      role: "doctor",
+      specialty: d.specialty,
+    });
+    newDoctor.doctorId = newDoctor._id.toString();
+    await newDoctor.save();
+    added++;
+  }
+
+  revalidatePath("/admin");
+  return { added, totalStatic: staticDoctors.length };
 }
