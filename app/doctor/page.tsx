@@ -10,8 +10,23 @@ export default async function DoctorPage() {
   if (user.role !== "doctor") redirect("/");
 
   await connectDB();
-  
-  const appointments = await Appointment.find({ doctorId: user.doctorId }).sort({ date: 1 }).lean();
+
+  // Clean name: "Dr. Bam Adams" -> "bam adams", "Bam Adams" -> "bam adams"
+  // So booking with doctorName go match doctor account even if doctorId no match
+  const clean = (n: string) => n.toLowerCase().replace("dr. ", "").replace("dr ", "").trim();
+  const myName = clean(user.name);
+
+  const appointments = await Appointment.find({
+    $or: [
+      { doctorId: user.doctorId },
+      { doctorId: user.id },
+      { doctorName: user.name },
+      { doctorName: { $regex: myName, $options: "i" } },
+    ],
+  })
+    .sort({ date: 1 })
+    .lean();
+
   const pending = appointments.filter((a: any) => a.status === "pending").length;
   const accepted = appointments.filter((a: any) => a.status === "confirmed").length;
 

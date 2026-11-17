@@ -72,8 +72,13 @@ export async function updateAppointmentStatus(formData: FormData): Promise<void>
   const appt = await Appointment.findById(id);
   if (!appt) return;
 
-  if (user.role === "doctor" && appt.doctorId !== user.doctorId) {
-    return;
+  if (user.role === "doctor") {
+    const clean = (n: string) => n.toLowerCase().replace("dr. ", "").replace("dr ", "").trim();
+    const isMyAppointment =
+      appt.doctorId === user.doctorId ||
+      appt.doctorId === user.id ||
+      clean(appt.doctorName || "") === clean(user.name);
+    if (!isMyAppointment) return;
   }
 
   appt.status = status;
