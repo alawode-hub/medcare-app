@@ -9,8 +9,8 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="bg-slate-900 min-h-screen">
-      <main className="max-w-md mx-auto px-5 py-10">
+    <div className="flex-1 flex items-center justify-center px-5 py-8">
+      <main className="w-full max-w-md">
         <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700">
           <h1 className="text-white text-2xl font-bold text-center">Welcome Back</h1>
           <p className="text-slate-400 text-sm text-center mt-1">Login to MedCare</p>

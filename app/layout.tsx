@@ -12,7 +12,7 @@ async function Header() {
   const user = await getCurrentUser();
 
   return (
-    <header className="max-w-6xl mx-auto px-5 py-4 flex justify-between items-center relative">
+    <header className="max-w-6xl mx-auto px-5 py-4 flex justify-between items-center relative w-full">
       <Link href="/" className="flex items-center gap-2 text-white font-bold text-xl">
         <span className="w-8 h-8 bg-teal-400 rounded-lg flex items-center justify-center text-slate-900 text-xl font-bold">+</span>
         <span>Med<span className="text-teal-400">Care</span></span>
@@ -44,11 +44,13 @@ async function Header() {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="bg-slate-900">
-      <body className="bg-slate-900 min-h-screen text-white">
+      <body className="bg-slate-900 min-h-screen text-white flex flex-col">
         <Suspense fallback={<div className="h-16" />}>
           <Header />
         </Suspense>
-        {children}
+        <main className="flex-1 flex flex-col w-full">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>
