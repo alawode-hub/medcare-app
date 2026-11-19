@@ -6,15 +6,6 @@ import { useRouter } from "next/navigation";
 import { doctors } from "../../data/doctors";
 import { bookAppointment, getBookedSlots } from "../../../actions/appointment";
 
-const availability: Record<string, string[]> = {
-  "1": ["9:00 AM", "10:00 AM", "2:00 PM", "3:00 PM"],
-  "2": ["10:00 AM", "11:00 AM", "2:00 PM", "4:00 PM"],
-  "3": ["9:00 AM", "11:00 AM", "3:00 PM"],
-  "4": ["9:00 AM", "10:00 AM", "11:00 AM", "2:00 PM"],
-  "5": ["9:00 AM", "10:00 AM", "3:00 PM", "4:00 PM"],
-  "6": ["11:00 AM", "2:00 PM", "4:00 PM"],
-};
-
 const allSlots = ["9:00 AM", "10:00 AM", "11:00 AM", "2:00 PM", "3:00 PM", "4:00 PM"];
 
 export default function DoctorDetail({ params }: { params: Promise<{ id: string }> }) {
@@ -53,7 +44,6 @@ export default function DoctorDetail({ params }: { params: Promise<{ id: string 
 
   const doctor = doctors.find((d) => d.id === doctorId);
 
- 
   if (!doctorId || !doctor) {
     return (
       <div className="flex-1 flex items-center justify-center py-20">
@@ -61,8 +51,6 @@ export default function DoctorDetail({ params }: { params: Promise<{ id: string 
       </div>
     );
   }
-
-  const available = availability[doctor.id] || allSlots;
 
   const handleBook = async (formData: FormData) => {
     if (!isLoggedIn) {
@@ -114,12 +102,8 @@ export default function DoctorDetail({ params }: { params: Promise<{ id: string 
           <label className="block text-sm font-bold mt-5 mb-2 text-white">Pick a time - {date}</label>
           <div className="grid grid-cols-2 gap-3">
             {allSlots.map((slot) => {
-              const isAvailable = available.includes(slot);
               const isBooked = bookedSlots.includes(slot);
               const isSelected = selected === slot;
-              if (!isAvailable) {
-                return <div key={slot} className="bg-slate-900 border border-slate-700 text-center py-3 rounded-xl text-sm text-slate-400 opacity-50">{slot} - N/A</div>;
-              }
               if (isBooked) {
                 return <div key={slot} className="bg-red-500/20 border border-red-500/30 text-center py-3 rounded-xl text-sm text-red-300 font-bold">{slot} - Booked</div>;
               }
