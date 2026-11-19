@@ -28,6 +28,18 @@ const UserSchema = new Schema({
     type: String,
     default: ""
   },
+  image: {
+    type: String,
+    default: ""
+  },
+  experience: {
+    type: String,
+    default: ""
+  },
+  bio: {
+    type: String,
+    default: ""
+  },
 }, { timestamps: true });
 
 export default mongoose.models.User || mongoose.model("User", UserSchema);

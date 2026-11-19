@@ -21,6 +21,42 @@ async function checkAdmin() {
   return user;
 }
 
+// Helper - validate pic file for server side
+async function getImageValue(formData: FormData): Promise<{ image: string; error?: string }> {
+  const imageUrl = (formData.get("imageUrl") as string)?.trim() || "";
+  const file = formData.get("imageFile") as File | null;
+
+  // If file dey, use file
+  if (file && file.size > 0) {
+    // 1. Must be image
+    if (!file.type.startsWith("image/")) {
+      return { image: "", error: "Pic must be image file - JPG, PNG or WEBP" };
+    }
+    // 2. Only allow jpg, png, webp
+    const allowed = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
+    if (!allowed.includes(file.type)) {
+      return { image: "", error: "Only JPG, PNG or WEBP allowed" };
+    }
+    // 3. Max 2MB
+    if (file.size > 2 * 1024 * 1024) {
+      return { image: "", error: "Pic too big - max 2MB" };
+    }
+    const bytes = await file.arrayBuffer();
+    const base64 = Buffer.from(bytes).toString("base64");
+    return { image: `data:${file.type};base64,${base64}` };
+  }
+
+  // If na link, validate am small
+  if (imageUrl) {
+    if (!imageUrl.startsWith("http") && !imageUrl.startsWith("/") && !imageUrl.startsWith("data:image")) {
+      return { image: "", error: "Pic link no valid - must start with https:// or /" };
+    }
+    return { image: imageUrl };
+  }
+
+  return { image: "" };
+}
+
 export async function addDoctor(formData: FormData) {
   await connection();
   await checkAdmin();
@@ -28,10 +64,17 @@ export async function addDoctor(formData: FormData) {
   const email = (formData.get("email") as string)?.trim().toLowerCase();
   const password = formData.get("password") as string;
   const specialty = (formData.get("specialty") as string)?.trim();
+  const experience = (formData.get("experience") as string)?.trim() || "";
+  const bio = (formData.get("bio") as string)?.trim() || "";
 
   if (!name || !email || !password || !specialty) {
     return { error: "Fill all fields - name, email, password, specialty" };
   }
+
+  // Pic validation for server
+  const pic = await getImageValue(formData);
+  if (pic.error) return { error: pic.error };
+
   await connectDB();
   const exists = await User.findOne({ email });
   if (exists) return { error: "This email don already exist" };
@@ -43,11 +86,15 @@ export async function addDoctor(formData: FormData) {
     password: hashed,
     role: "doctor",
     specialty,
+    image: pic.image,
+    experience,
+    bio,
   });
   newDoctor.doctorId = newDoctor._id.toString();
   await newDoctor.save();
 
   revalidatePath("/admin");
+  revalidatePath("/doctors");
   return { success: true };
 }
 
@@ -69,20 +116,28 @@ export async function updateDoctor(formData: FormData) {
   const email = (formData.get("email") as string)?.trim().toLowerCase();
   const specialty = (formData.get("specialty") as string)?.trim();
   const password = (formData.get("password") as string)?.trim();
+  const experience = (formData.get("experience") as string)?.trim() || "";
+  const bio = (formData.get("bio") as string)?.trim() || "";
 
   if (!id || !name || !email || !specialty) {
     return { error: "Fill name, email, specialty" };
   }
+
+  const pic = await getImageValue(formData);
+  if (pic.error) return { error: pic.error };
+
   await connectDB();
   const exists = await User.findOne({ email, _id: { $ne: id } });
   if (exists) return { error: "Another user don use this email" };
 
-  const update: any = { name, email, specialty };
+  const update: any = { name, email, specialty, experience, bio };
+  if (pic.image) update.image = pic.image;
   if (password) {
     update.password = await bcrypt.hash(password, 10);
   }
   await User.findByIdAndUpdate(id, update);
   revalidatePath("/admin");
+  revalidatePath("/doctors");
   return { success: true };
 }
 
@@ -115,5 +170,6 @@ export async function seedDoctors() {
   }
 
   revalidatePath("/admin");
+  revalidatePath("/doctors");
   return { added, totalStatic: staticDoctors.length };
 }
