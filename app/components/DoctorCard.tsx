@@ -2,19 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function DoctorCard({ doctor }: { doctor: any }) {
-  const imageSrc =
-    doctor.image ||
-    "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80";
-
   return (
     <Link href={`/doctors/${doctor.id}`} className="block bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 hover:border-teal-400 transition">
-      <div className="relative h-56 w-full bg-slate-700">
+      <div className="relative h-64 w-full bg-slate-700 overflow-hidden">
         <Image
-          src={imageSrc}
+          src={doctor.image}
           alt={doctor.name}
           fill
-          className="object-cover"
-          sizes="(max-width: 640px) 100vw, 33vw"
+          className="object-cover object-top"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
       </div>
 
