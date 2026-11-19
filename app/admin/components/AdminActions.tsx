@@ -118,8 +118,8 @@ export function SeedDoctorsButton() {
   const [msg, setMsg] = useState("");
   return (
     <div>
-      <button disabled={loading} onClick={async () => { setLoading(true); const res = await seedDoctors(); setLoading(false); setMsg(`Added ${res.added} doctors. Refresh page.`); }} className="bg-teal-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-sm disabled:opacity-50">
-        {loading ? "Importing..." : "Import 6 Static Doctors to DB"}
+      <button disabled={loading} onClick={async () => { setLoading(true); setMsg(""); const res: any = await seedDoctors(); setLoading(false); setMsg(`Done! Added: ${res.added}, Updated: ${res.updated}`); setTimeout(() => window.location.reload(), 1000); }} className="bg-teal-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-sm disabled:opacity-50">
+        {loading ? "Fixing..." : "Seed Doctors - Fix Pictures"}
       </button>
       {msg && <p className="text-green-300 text-sm mt-2">{msg}</p>}
     </div>
