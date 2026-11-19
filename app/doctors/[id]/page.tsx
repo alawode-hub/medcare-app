@@ -82,7 +82,7 @@ export default function DoctorDetail({ params }: { params: Promise<{ id: string 
     <div className="flex-1">
       <div className="max-w-6xl mx-auto px-5 py-8 grid md:grid-cols-2 gap-6">
         <div className="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700">
-          <div className="relative w-full bg-slate-900 overflow-hidden aspect-[4/4]">
+          <div className="relative w-full bg-slate-900 overflow-hidden aspect-square">
             <Image
               src={doctor.image}
               alt={doctor.name}
