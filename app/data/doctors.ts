@@ -52,6 +52,6 @@ export const doctors = [
     experience: 9,
     about: "Skin, hair and nails - acne, eczema and mole checks.",
     next: "Today, 4:00 PM",
-    image: "/doctors6.jpg"
+    image: "/doctos6.jpg"
   },
 ];
