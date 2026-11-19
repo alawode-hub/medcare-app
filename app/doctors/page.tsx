@@ -10,7 +10,7 @@ export default async function DoctorsPage() {
 
   const doctors = dbDoctors.length > 0
     ? dbDoctors.map((d: any) => ({
-        id: d.doctorId || d._id.toString(),
+        id: d._id.toString(),
         name: d.name,
         specialty: d.specialty || "General Practitioner",
         image: d.image || "",

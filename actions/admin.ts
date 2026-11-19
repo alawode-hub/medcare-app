@@ -160,12 +160,10 @@ export async function seedDoctors() {
   let updated = 0;
 
   for (const d of fullDoctors) {
-    const cleanName = d.name.replace(/^Dr\.\s*/i, "").trim();
-    const email = `${cleanName.toLowerCase().replace(/[^a-z]+/g, ".").replace(/^\.|\.$/g, "")}@medcare.com`;
-    const exists = await User.findOne({ email });
+    // Find by NAME - this one no go miss, even if email different
+    const exists = await User.findOne({ name: d.name, role: "doctor" });
 
     if (exists) {
-      // Doctor don exist, just add picture + experience + bio wey e miss
       exists.image = d.image;
       exists.experience = d.experience;
       exists.bio = d.bio;
@@ -175,6 +173,8 @@ export async function seedDoctors() {
       continue;
     }
 
+    const cleanName = d.name.replace(/^Dr\.\s*/i, "").trim();
+    const email = `${cleanName.toLowerCase().replace(/[^a-z]+/g, ".").replace(/^\.|\.$/g, "")}@medcare.com`;
     const newDoctor = await User.create({
       name: d.name,
       email,
