@@ -5,6 +5,12 @@ export default function Navbar({ user }: { user?: any }) {
   const first = clean.split(" ")[0] || "";
   const hiName = user?.role === "doctor" ? `Dr. ${first}` : first;
 
+  // --- FIX: Show correct dashboard per role ---
+  const dashboardLink =
+    user?.role === "admin" ? { href: "/admin", label: "Admin" } :
+    user?.role === "doctor" ? { href: "/doctor", label: "Doctor" } :
+    { href: "/dashboard", label: "Appointments" };
+
   return (
     <nav className="flex justify-between items-center px-5 py-4 max-w-6xl mx-auto w-full">
       <Link href="/" className="flex items-center gap-2 font-bold text-lg text-white">
@@ -14,13 +20,20 @@ export default function Navbar({ user }: { user?: any }) {
       <div className="flex gap-5 text-sm items-center">
         <Link href="/" className="text-teal-400">Home</Link>
         <Link href="/doctors" className="text-white/80">Doctors</Link>
-        <Link href="/dashboard" className="text-white/80">Appointments</Link>
+
+        {user && (
+          <Link href={dashboardLink.href} className="text-white/80">{dashboardLink.label}</Link>
+        )}
+
         {user ? (
           <span className="text-white/80">Hi, {hiName}</span>
         ) : (
           <Link href="/login" className="text-white/80">Login</Link>
         )}
-        <Link href="/register" className="bg-teal-400 text-slate-900 px-4 py-2 rounded-lg font-bold">Register</Link>
+
+        {!user && (
+          <Link href="/register" className="bg-teal-400 text-slate-900 px-4 py-2 rounded-lg font-bold">Register</Link>
+        )}
       </div>
     </nav>
   );

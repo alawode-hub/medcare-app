@@ -1,4 +1,4 @@
-export const instant = false;
+export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -9,6 +9,10 @@ import AppointmentCard from "../components/AppointmentCard";
 export default async function Dashboard() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
+
+  // --- FIX: Admin & Doctor no suppose stay here ---
+  if (user.role === "admin") redirect("/admin");
+  if (user.role === "doctor") redirect("/doctor");
 
   const appointments = await getMyAppointments();
   const active = appointments.filter((a: any) => a.status !== "cancelled");
