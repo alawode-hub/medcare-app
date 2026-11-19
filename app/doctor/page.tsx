@@ -11,7 +11,6 @@ export default async function DoctorPage() {
 
   await connectDB();
 
-  
   const clean = (n: string) => n.toLowerCase().replace("dr. ", "").replace("dr ", "").trim();
   const myName = clean(user.name);
 
@@ -26,24 +25,24 @@ export default async function DoctorPage() {
     .sort({ date: 1 })
     .lean();
 
-    const pending = appointments.filter((a: any) => a.status === "pending").length;
-    const accepted = appointments.filter((a: any) => a.status === "confirmed" || a.status === "completed").length;
-    const completed = appointments.filter((a: any) => a.status === "completed").length;
-    const rejected = appointments.filter((a: any) => a.status === "cancelled").length;
+  const pending = appointments.filter((a: any) => a.status === "pending").length;
+  const accepted = appointments.filter((a: any) => a.status === "confirmed").length;
+  const completed = appointments.filter((a: any) => a.status === "completed").length;
+  const rejected = appointments.filter((a: any) => a.status === "cancelled").length;
 
   return (
     <div className="max-w-6xl mx-auto px-5 py-10">
       <p className="text-teal-400 text-sm font-bold tracking-widest">DOCTOR DASHBOARD</p>
       <h1 className="text-3xl font-bold text-white mt-1">Welcome, {user.name}</h1>
-      <p className="text-slate-400 text-sm mt-2">Review appointments - accept or reject them here.</p>
+      <p className="text-slate-400 text-sm mt-2">Review appointments - accept, complete or reject them here.</p>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
         <div className="bg-slate-800 p-4 rounded-2xl border border-slate-700"><p className="text-slate-400 text-sm">Total</p><p className="text-white text-2xl font-bold">{appointments.length}</p></div>
         <div className="bg-slate-800 p-4 rounded-2xl border border-slate-700"><p className="text-slate-400 text-sm">Accepted</p><p className="text-teal-300 text-2xl font-bold">{accepted}</p></div>
         <div className="bg-slate-800 p-4 rounded-2xl border border-slate-700"><p className="text-slate-400 text-sm">Completed</p><p className="text-green-300 text-2xl font-bold">{completed}</p></div>
         <div className="bg-slate-800 p-4 rounded-2xl border border-slate-700"><p className="text-slate-400 text-sm">Rejected</p><p className="text-red-300 text-2xl font-bold">{rejected}</p></div>
-          </div>
-          
+      </div>
+
       <div className="grid gap-4 mt-8">
         {appointments.length === 0 && <p className="text-slate-400">No appointments yet.</p>}
         {appointments.map((a: any) => (

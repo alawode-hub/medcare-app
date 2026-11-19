@@ -36,7 +36,7 @@ export default function Footer() {
 
         <div>
           <p className="font-bold text-white">Contact</p>
-          <p className="text-slate-400 text-sm mt-2 leading-6">+1 (555) 010-2030<br/>hello@medcare.example<br/>120 Wellness Avenue, Suite 4<br/>Mon-Sat, 8:00 AM - 6:00 PM</p>
+          <p className="text-slate-400 text-sm mt-2 leading-6">09067199520<br/>hello@medcare.com<br/>NO 13 Lekki Epe Road<br/>Mon-Sat, 8:00 AM - 6:00 PM</p>
         </div>
       </div>
     </footer>

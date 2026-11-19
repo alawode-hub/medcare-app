@@ -22,7 +22,6 @@ export async function bookAppointment(formData: FormData) {
     return { error: "Pick date and time first" };
   }
 
-  // Reason must not be empty - no min length, type many or small, e go enter
   if (!reason.trim()) {
     return { error: "Abeg type reason for visit - wetin dey worry you?" };
   }

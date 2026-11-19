@@ -40,7 +40,7 @@ export default function DoctorActions({ id, status }: { id: string; status: stri
             <form action={updateAppointmentStatus}>
               <input type="hidden" name="id" value={id} />
               <input type="hidden" name="status" value="completed" />
-              <button className="bg-green-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-sm">Accepted</button>
+              <button className="bg-green-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-sm">Mark Complete</button>
             </form>
             <button
               onClick={() => setShowConfirm(true)}
@@ -55,7 +55,6 @@ export default function DoctorActions({ id, status }: { id: string; status: stri
         {status === "completed" && <p className="text-green-300 text-sm font-bold px-2 py-2">Done</p>}
       </div>
 
-     
       {showConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
           <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 w-full max-w-sm shadow-2xl">
