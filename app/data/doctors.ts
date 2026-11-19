@@ -25,7 +25,7 @@ export const doctors = [
     experience: 10,
     about: "Cleanings, fillings, braces and gentle care for nervous patients.",
     next: "Tomorrow, 9:00 AM",
-    image: "/doctors1.avif"
+    image: "/doctor1.avif"
   },
   {
     id: "4",
@@ -34,7 +34,7 @@ export const doctors = [
     experience: 18,
     about: "Heart rhythm, blood pressure and cholesterol, with a focus on prevention.",
     next: "Tomorrow, 10:00 AM",
-    image: "/doctors4.jpg"
+    image: "/doctor4.jpg"
   },
   {
     id: "5",
@@ -43,7 +43,7 @@ export const doctors = [
     experience: 14,
     about: "Newborn checks, vaccinations and care for children through their teens.",
     next: "Tomorrow, 9:00 AM",
-    image: "/doctors5.jpg"
+    image: "/doctor5.jpg"
   },
   {
     id: "6",
@@ -52,6 +52,6 @@ export const doctors = [
     experience: 9,
     about: "Skin, hair and nails - acne, eczema and mole checks.",
     next: "Today, 4:00 PM",
-    image: "/doctos6.jpg"
+    image: "/doctor6.jpg"
   },
 ];
