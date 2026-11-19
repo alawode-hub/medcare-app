@@ -51,7 +51,17 @@ export default function DoctorDetail({ params }: { params: Promise<{ id: string 
     setSelected("");
   }, [doctorId, date]);
 
-  const doctor = doctors.find((d) => d.id === doctorId) || doctors[0];
+  const doctor = doctors.find((d) => d.id === doctorId);
+
+ 
+  if (!doctorId || !doctor) {
+    return (
+      <div className="flex-1 flex items-center justify-center py-20">
+        <p className="text-slate-400">Loading doctor...</p>
+      </div>
+    );
+  }
+
   const available = availability[doctor.id] || allSlots;
 
   const handleBook = async (formData: FormData) => {
@@ -72,12 +82,12 @@ export default function DoctorDetail({ params }: { params: Promise<{ id: string 
     <div className="flex-1">
       <div className="max-w-6xl mx-auto px-5 py-8 grid md:grid-cols-2 gap-6">
         <div className="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700">
-          <div className="relative h-80 w-full bg-slate-700 overflow-hidden">
+          <div className="relative w-full bg-slate-900 overflow-hidden aspect-[4/4]">
             <Image
               src={doctor.image}
               alt={doctor.name}
               fill
-              className="object-cover object-top"
+              className="object-contain"
               sizes="(max-width: 768px) 100vw, 50vw"
               priority
             />

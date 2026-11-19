@@ -25,8 +25,8 @@ function DoctorsContent() {
   });
 
   return (
-    <div className="bg-slate-900 min-h-screen">
-      <div className="max-w-6xl mx-auto px-5 py-10">
+    <div className="flex-1">
+      <div className="max-w-6xl mx-auto px-5 py-8">
         <p className="text-teal-400 text-sm font-bold tracking-widest">ALL DOCTORS</p>
         <h1 className="text-3xl font-bold mt-1 text-white">Find a doctor</h1>
         <p className="text-slate-400 mt-2">All doctors, with next open time.</p>
