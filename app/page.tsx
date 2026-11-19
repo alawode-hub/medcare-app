@@ -49,7 +49,7 @@ export default function Home() {
             <p className="text-slate-400 mt-4 text-sm sm:text-base">Find a trusted doctor, see real open times and book your visit in under a minute. No phone calls and no waiting on hold.</p>
             <div className="flex flex-col sm:flex-row gap-3 mt-6">
               <Link href={doctorsLink} className="bg-teal-400 text-slate-900 font-bold px-5 py-3 rounded-lg text-sm text-center">Find a Doctor →</Link>
-              <button className="bg-slate-800 px-5 py-3 rounded-lg text-sm font-bold border border-slate-700 text-white">How it works</button>
+              <a href="#how-it-works" className="bg-slate-800 px-5 py-3 rounded-lg text-sm font-bold border border-slate-700 text-white text-center">How it works</a>
             </div>
           </div>
           <div className="bg-slate-800 rounded-2xl p-5 border border-slate-700">
@@ -119,6 +119,59 @@ export default function Home() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
                 {doctors.map((d) => <DoctorCard key={d.id} doctor={d} />)}
+              </div>
+            </div>
+
+            <div id="how-it-works" className="py-12">
+              <p className="text-teal-400 text-sm font-bold tracking-widest">HOW IT WORKS</p>
+              <h2 className="text-2xl font-bold mt-1 text-white">Three steps to your appointment</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+                <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700">
+                  <span className="bg-teal-400 text-slate-900 w-10 h-10 flex items-center justify-center rounded-lg text-lg">🔍</span>
+                  <p className="text-teal-400 text-xs font-bold mt-4">STEP 1</p>
+                  <p className="font-bold mt-1 text-white text-lg">Find a doctor</p>
+                  <p className="text-slate-400 text-sm mt-1">Search by name or browse by specialty to find the right doctor for you.</p>
+                </div>
+                <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700">
+                  <span className="bg-teal-400 text-slate-900 w-10 h-10 flex items-center justify-center rounded-lg text-lg">📅</span>
+                  <p className="text-teal-400 text-xs font-bold mt-4">STEP 2</p>
+                  <p className="font-bold mt-1 text-white text-lg">Book an appointment</p>
+                  <p className="text-slate-400 text-sm mt-1">Pick an open date and time, add a short reason and confirm.</p>
+                </div>
+                <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700">
+                  <span className="bg-teal-400 text-slate-900 w-10 h-10 flex items-center justify-center rounded-lg text-lg">🩺</span>
+                  <p className="text-teal-400 text-xs font-bold mt-4">STEP 3</p>
+                  <p className="font-bold mt-1 text-white text-lg">Visit your doctor</p>
+                  <p className="text-slate-400 text-sm mt-1">Turn up at your time. Your appointment stays on your dashboard.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="pb-12">
+              <p className="text-teal-400 text-sm font-bold tracking-widest">WHY MEDCARE</p>
+              <h2 className="text-2xl font-bold mt-1 text-white">Booking a doctor should not be a chore</h2>
+              <p className="text-slate-400 text-sm mt-2">We show only real open times, so the slot you pick is the slot you get. Manage every visit from one place and cancel when plans change.</p>
+              <div className="bg-teal-400/10 border border-teal-400/20 rounded-2xl p-5 mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700">
+                  <span className="bg-teal-400 text-slate-900 w-8 h-8 flex items-center justify-center rounded-lg">🕐</span>
+                  <p className="font-bold mt-3 text-white">Real open times</p>
+                  <p className="text-slate-400 text-sm mt-1">Booked slots disappear instantly, so nobody is double-booked.</p>
+                </div>
+                <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700">
+                  <span className="bg-teal-400 text-slate-900 w-8 h-8 flex items-center justify-center rounded-lg">✓</span>
+                  <p className="font-bold mt-3 text-white">Verified doctors</p>
+                  <p className="text-slate-400 text-sm mt-1">Every doctor profile lists their qualifications and experience.</p>
+                </div>
+                <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700">
+                  <span className="bg-teal-400 text-slate-900 w-8 h-8 flex items-center justify-center rounded-lg">📅</span>
+                  <p className="font-bold mt-3 text-white">Easy to manage</p>
+                  <p className="text-slate-400 text-sm mt-1">See upcoming visits and cancel in one tap.</p>
+                </div>
+                <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700">
+                  <span className="bg-teal-400 text-slate-900 w-8 h-8 flex items-center justify-center rounded-lg">👤</span>
+                  <p className="font-bold mt-3 text-white">Made for everyone</p>
+                  <p className="text-slate-400 text-sm mt-1">Patients, doctors and clinic admins each get a simple dashboard.</p>
+                </div>
               </div>
             </div>
           </>

@@ -5,7 +5,10 @@ export default function Footer() {
     <footer className="bg-slate-800 px-5 py-10 border-t border-slate-700">
       <div className="max-w-6xl mx-auto grid sm:grid-cols-4 gap-6">
         <div>
-          <p className="font-bold text-lg text-white">Med<span className="text-teal-400">Care</span></p>
+          <div className="flex items-center gap-2">
+            <span className="w-8 h-8 bg-teal-400 rounded-lg flex items-center justify-center text-slate-900 text-xl font-bold">+</span>
+            <p className="font-bold text-lg text-white">Med<span className="text-teal-400">Care</span></p>
+          </div>
           <p className="text-slate-400 text-sm mt-2">Online clinic appointments with trusted doctors, booked in a minute.</p>
         </div>
 
