@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -10,7 +9,6 @@ export default async function Dashboard() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
-  // --- FIX: Admin & Doctor no suppose stay here ---
   if (user.role === "admin") redirect("/admin");
   if (user.role === "doctor") redirect("/doctor");
 
