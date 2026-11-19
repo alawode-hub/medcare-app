@@ -8,6 +8,14 @@ import MobileMenu from "./components/MobileMenu";
 
 export const instant = false;
 
+function getHiName(user: any) {
+  if (!user) return "";
+  const clean = user.name?.replace(/^Dr\.\s*/i, "").trim() || "";
+  const first = clean.split(" ")[0] || "";
+  if (user.role === "doctor") return `Dr. ${first}`;
+  return first;
+}
+
 async function Header() {
   const user = await getCurrentUser();
 
@@ -23,7 +31,7 @@ async function Header() {
         <Link href="/dashboard" className="text-slate-300 text-sm">Appointments</Link>
         {user ? (
           <>
-            <span className="text-slate-300 text-sm">Hi, {user.name.split(" ")[0]}</span>
+            <span className="text-slate-300 text-sm">Hi, {getHiName(user)}</span>
             {user.role === "patient" && <Link href="/dashboard" className="text-white text-sm bg-slate-800 px-4 py-2 rounded-lg">Dashboard</Link>}
             {user.role === "doctor" && <Link href="/doctor" className="text-white text-sm bg-slate-800 px-4 py-2 rounded-lg">Doctor</Link>}
             {user.role === "admin" && <Link href="/admin" className="text-white text-sm bg-slate-800 px-4 py-2 rounded-lg">Admin</Link>}
