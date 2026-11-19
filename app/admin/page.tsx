@@ -15,7 +15,6 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
 
   const { tab, status } = await searchParams;
   const activeTab = tab || "doctors";
-  // status filter: all | pending | confirmed | completed | cancelled
   const activeStatus = status || "all";
 
   await connectDB();
@@ -33,14 +32,12 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const completed = appointments.filter((a: any) => a.status === "completed").length;
   const rejected = appointments.filter((a: any) => a.status === "cancelled").length;
 
-  // Filter appointments based on status card wey admin click
   const filteredAppointments = activeStatus === "all"
     ? appointments
     : appointments.filter((a: any) => a.status === activeStatus);
 
   const tabStyle = (t: string) => `px-4 py-2 rounded-full text-sm font-bold ${activeTab === t ? "bg-teal-400 text-slate-900" : "bg-slate-800 text-slate-300 border border-slate-700"}`;
 
-  // Style for stat cards - if active, e go get coloured border
   const statCard = (isActive: boolean, activeColor: string) =>
     `bg-slate-800 p-4 rounded-2xl border transition ${isActive ? `${activeColor} ring-1` : "border-slate-700"} hover:opacity-90 block text-left w-full`;
 
@@ -62,7 +59,6 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
       <h1 className="text-3xl font-bold text-white mt-1">Welcome, {user.name}</h1>
       <p className="text-slate-400 text-sm mt-2">Manage doctors, patients and all appointments.</p>
 
-      {/* STAT CARDS - Now clickable, e go filter appointments */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-6">
         <div className="bg-slate-800 p-4 rounded-2xl border border-slate-700"><p className="text-slate-400 text-sm">Total Doctors</p><p className="text-white text-2xl font-bold">{totalDoctors}</p></div>
         <div className="bg-slate-800 p-4 rounded-2xl border border-slate-700"><p className="text-slate-400 text-sm">Total Patients</p><p className="text-white text-2xl font-bold">{totalPatients}</p></div>
@@ -90,19 +86,16 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
       {activeTab === "doctors" && (
         <div className="grid gap-4 mt-6">
           <AddDoctorForm />
-          {dbDoctors.length === 0 && (
-            <div className="bg-slate-800 border border-slate-700 rounded-2xl p-5">
-              <p className="text-white font-bold">No doctors for DB yet</p>
-              <p className="text-slate-400 text-sm mt-1">Click below to carry your 6 doctors from code enter DB once.</p>
-              <div className="mt-4"><SeedDoctorsButton /></div>
+
+          {/* FIX PICTURES - This one go ALWAYS show, even if you get 6 doctors */}
+          <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-4 flex justify-between items-center flex-wrap gap-3">
+            <div>
+              <p className="text-white font-bold text-sm">Fix Doctor Pictures</p>
+              <p className="text-slate-400 text-xs mt-1">You get {dbDoctors.length} doctors. Click to put their pictures + bio back into DB.</p>
             </div>
-          )}
-          {dbDoctors.length > 0 && dbDoctors.length < 6 && (
-            <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-4 flex justify-between items-center">
-              <p className="text-slate-300 text-sm">You get {dbDoctors.length} doctors. Want carry the remaining static doctors enter DB?</p>
-              <SeedDoctorsButton />
-            </div>
-          )}
+            <SeedDoctorsButton />
+          </div>
+
           {dbDoctors.map((d: any) => (
             <div key={d._id.toString()} className="bg-slate-800 rounded-2xl p-5 border border-slate-700 flex justify-between gap-4">
               <div><p className="font-bold text-white">{d.name}</p><p className="text-slate-400 text-sm">{d.email} • {d.specialty || "Doctor"}</p><p className="text-slate-500 text-xs mt-1">{appointments.filter((a: any) => a.doctorName === d.name || a.doctorId === d._id.toString()).length} appointments</p></div>
@@ -130,7 +123,6 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
 
       {activeTab === "appointments" && (
         <div className="mt-6">
-          {/* FILTER PILLS - For professional look */}
           <div className="flex gap-2 flex-wrap items-center">
             {filterPill("all", "All", total)}
             {filterPill("pending", "Pending", pending)}
