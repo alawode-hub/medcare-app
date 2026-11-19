@@ -6,7 +6,7 @@ import Appointment from "@/models/Appointment";
 import User from "@/models/User";
 import { updateAppointmentStatus } from "@/actions/appointment";
 import AddDoctorForm from "./components/AddDoctorForm";
-import { DeleteUserButton, SeedDoctorsButton } from "./components/AdminActions";
+import { DeleteUserButton, SeedDoctorsButton, ViewDoctorButton, EditDoctorButton } from "./components/AdminActions";
 
 export default async function AdminPage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
   const user = await getCurrentUser();
@@ -23,7 +23,6 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const dbDoctors: any[] = allUsers.filter((u: any) => u.role === "doctor");
   const patients: any[] = allUsers.filter((u: any) => u.role === "patient");
 
-  // OPTION C: Total = DB only. No static again.
   const totalDoctors = dbDoctors.length;
   const totalPatients = patients.length;
   const total = appointments.length;
@@ -60,7 +59,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           {dbDoctors.length === 0 && (
             <div className="bg-slate-800 border border-slate-700 rounded-2xl p-5">
               <p className="text-white font-bold">No doctors for DB yet</p>
-              <p className="text-slate-400 text-sm mt-1">Click below to carry your 6 doctors from code enter DB once. After that, na DB be Oga.</p>
+              <p className="text-slate-400 text-sm mt-1">Click below to carry your 6 doctors from code enter DB once.</p>
               <div className="mt-4"><SeedDoctorsButton /></div>
             </div>
           )}
@@ -73,7 +72,11 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           {dbDoctors.map((d: any) => (
             <div key={d._id.toString()} className="bg-slate-800 rounded-2xl p-5 border border-slate-700 flex justify-between gap-4">
               <div><p className="font-bold text-white">{d.name}</p><p className="text-slate-400 text-sm">{d.email} • {d.specialty || "Doctor"}</p><p className="text-slate-500 text-xs mt-1">{appointments.filter((a: any) => a.doctorName === d.name || a.doctorId === d._id.toString()).length} appointments</p></div>
-              <DeleteUserButton id={d._id.toString()} name={d.name} />
+              <div className="flex gap-2 items-start shrink-0">
+                <ViewDoctorButton doctor={JSON.parse(JSON.stringify(d))} apptCount={appointments.filter((a: any) => a.doctorName === d.name || a.doctorId === d._id.toString()).length} />
+                <EditDoctorButton doctor={JSON.parse(JSON.stringify(d))} />
+                <DeleteUserButton id={d._id.toString()} name={d.name} />
+              </div>
             </div>
           ))}
         </div>

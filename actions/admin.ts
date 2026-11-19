@@ -15,7 +15,6 @@ const staticDoctors = [
   { name: "Dr. Shola Adeniji", specialty: "Dentist" },
 ];
 
-
 async function checkAdmin() {
   const user = await getCurrentUser();
   if (!user || user.role !== "admin") throw new Error("Not admin");
@@ -62,7 +61,31 @@ export async function deleteUser(userId: string) {
   return { success: true };
 }
 
-// OPTION C: Move 6 static doctors enter DB once
+export async function updateDoctor(formData: FormData) {
+  await connection();
+  await checkAdmin();
+  const id = formData.get("id") as string;
+  const name = (formData.get("name") as string)?.trim();
+  const email = (formData.get("email") as string)?.trim().toLowerCase();
+  const specialty = (formData.get("specialty") as string)?.trim();
+  const password = (formData.get("password") as string)?.trim();
+
+  if (!id || !name || !email || !specialty) {
+    return { error: "Fill name, email, specialty" };
+  }
+  await connectDB();
+  const exists = await User.findOne({ email, _id: { $ne: id } });
+  if (exists) return { error: "Another user don use this email" };
+
+  const update: any = { name, email, specialty };
+  if (password) {
+    update.password = await bcrypt.hash(password, 10);
+  }
+  await User.findByIdAndUpdate(id, update);
+  revalidatePath("/admin");
+  return { success: true };
+}
+
 export async function seedDoctors() {
   await connection();
   await checkAdmin();
@@ -73,11 +96,9 @@ export async function seedDoctors() {
 
   for (const d of staticDoctors) {
     const cleanName = d.name.replace(/^Dr\.\s*/i, "").trim();
-    // Make email from name: e.g "Bam Adams" -> "bam.adams@medcare.com"
     const email = `${cleanName.toLowerCase().replace(/[^a-z]+/g, ".").replace(/^\.|\.$/g, "")}@medcare.com`;
     const exists = await User.findOne({ email });
     if (exists) continue;
-    // Also check by name, make we no duplicate
     const existsByName = await User.findOne({ name: d.name });
     if (existsByName) continue;
 
