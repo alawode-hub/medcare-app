@@ -69,16 +69,17 @@ export default function DoctorDetail({ params }: { params: Promise<{ id: string 
   };
 
   return (
-    <div className="bg-slate-900 min-h-screen">
-      <div className="max-w-6xl mx-auto px-5 py-10 grid md:grid-cols-2 gap-6">
+    <div className="flex-1">
+      <div className="max-w-6xl mx-auto px-5 py-8 grid md:grid-cols-2 gap-6">
         <div className="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700">
-          <div className="relative h-72 w-full bg-slate-700">
+          <div className="relative h-80 w-full bg-slate-700 overflow-hidden">
             <Image
-              src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80"
+              src={doctor.image}
               alt={doctor.name}
               fill
-              className="object-cover"
+              className="object-cover object-top"
               sizes="(max-width: 768px) 100vw, 50vw"
+              priority
             />
           </div>
           <div className="p-6">
