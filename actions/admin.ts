@@ -146,16 +146,34 @@ export async function seedDoctors() {
   await checkAdmin();
   await connectDB();
 
-  let added = 0;
-  const hashed = await bcrypt.hash("doctor123", 10);
+  const fullDoctors = [
+    { name: "Dr. Bam Adams", specialty: "General Practitioner", experience: "12", bio: "Check-ups, everyday illness and preventive care for the whole family.", image: "/doctor3.avif" },
+    { name: "Dr. Fatima Ajibade", specialty: "Gynecologist", experience: "16", bio: "Routine women's health, pregnancy care and family planning advice.", image: "/doctor2.jpg" },
+    { name: "Dr. Shola Adeniji", specialty: "Dentist", experience: "10", bio: "Cleanings, fillings, braces and gentle care for nervous patients.", image: "/doctor1.avif" },
+    { name: "Dr. Bayo Marcus", specialty: "Cardiologist", experience: "18", bio: "Heart rhythm, blood pressure and cholesterol, with a focus on prevention.", image: "/doctor4.jpg" },
+    { name: "Dr. Felix Ade", specialty: "Pediatrician", experience: "14", bio: "Newborn checks, vaccinations and care for children through their teens.", image: "/doctor5.jpg" },
+    { name: "Dr. Jerry Dotun", specialty: "Dermatologist", experience: "9", bio: "Skin, hair and nails - acne, eczema and mole checks.", image: "/doctor6.jpg" },
+  ];
 
-  for (const d of staticDoctors) {
+  const hashed = await bcrypt.hash("doctor123", 10);
+  let added = 0;
+  let updated = 0;
+
+  for (const d of fullDoctors) {
     const cleanName = d.name.replace(/^Dr\.\s*/i, "").trim();
     const email = `${cleanName.toLowerCase().replace(/[^a-z]+/g, ".").replace(/^\.|\.$/g, "")}@medcare.com`;
     const exists = await User.findOne({ email });
-    if (exists) continue;
-    const existsByName = await User.findOne({ name: d.name });
-    if (existsByName) continue;
+
+    if (exists) {
+      // Doctor don exist, just add picture + experience + bio wey e miss
+      exists.image = d.image;
+      exists.experience = d.experience;
+      exists.bio = d.bio;
+      exists.specialty = d.specialty;
+      await exists.save();
+      updated++;
+      continue;
+    }
 
     const newDoctor = await User.create({
       name: d.name,
@@ -163,6 +181,9 @@ export async function seedDoctors() {
       password: hashed,
       role: "doctor",
       specialty: d.specialty,
+      image: d.image,
+      experience: d.experience,
+      bio: d.bio,
     });
     newDoctor.doctorId = newDoctor._id.toString();
     await newDoctor.save();
@@ -171,5 +192,5 @@ export async function seedDoctors() {
 
   revalidatePath("/admin");
   revalidatePath("/doctors");
-  return { added, totalStatic: staticDoctors.length };
+  return { added, updated, totalStatic: fullDoctors.length };
 }

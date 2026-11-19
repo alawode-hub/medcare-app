@@ -16,7 +16,9 @@ export default async function DoctorsPage() {
         image: d.image || "",
         experience: d.experience || "",
         bio: d.bio || "",
+        about: d.bio || "",
         email: d.email,
+        next: "Available Today",
       }))
     : fallbackDoctors;
 
