@@ -21,23 +21,22 @@ async function checkAdmin() {
   return user;
 }
 
-// Helper - validate pic file for server side
 async function getImageValue(formData: FormData): Promise<{ image: string; error?: string }> {
   const imageUrl = (formData.get("imageUrl") as string)?.trim() || "";
   const file = formData.get("imageFile") as File | null;
 
-  // If file dey, use file
+  
   if (file && file.size > 0) {
-    // 1. Must be image
+  
     if (!file.type.startsWith("image/")) {
       return { image: "", error: "Pic must be image file - JPG, PNG or WEBP" };
     }
-    // 2. Only allow jpg, png, webp
+  
     const allowed = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
     if (!allowed.includes(file.type)) {
       return { image: "", error: "Only JPG, PNG or WEBP allowed" };
     }
-    // 3. Max 2MB
+    
     if (file.size > 2 * 1024 * 1024) {
       return { image: "", error: "Pic too big - max 2MB" };
     }
@@ -46,7 +45,8 @@ async function getImageValue(formData: FormData): Promise<{ image: string; error
     return { image: `data:${file.type};base64,${base64}` };
   }
 
-  // If na link, validate am small
+  
+
   if (imageUrl) {
     if (!imageUrl.startsWith("http") && !imageUrl.startsWith("/") && !imageUrl.startsWith("data:image")) {
       return { image: "", error: "Pic link no valid - must start with https:// or /" };
@@ -71,13 +71,13 @@ export async function addDoctor(formData: FormData) {
     return { error: "Fill all fields - name, email, password, specialty" };
   }
 
-  // Pic validation for server
+  
   const pic = await getImageValue(formData);
   if (pic.error) return { error: pic.error };
 
   await connectDB();
   const exists = await User.findOne({ email });
-  if (exists) return { error: "This email don already exist" };
+  if (exists) return { error: "This email is already registered" };
 
   const hashed = await bcrypt.hash(password, 10);
   const newDoctor = await User.create({
@@ -102,7 +102,7 @@ export async function deleteUser(userId: string) {
   await connection();
   const admin = await checkAdmin();
   await connectDB();
-  if (userId === admin.id) return { error: "You no fit delete yourself" };
+  if (userId === admin.id) return { error: "You can't delete yourself" };
   await User.findByIdAndDelete(userId);
   revalidatePath("/admin");
   return { success: true };
@@ -128,7 +128,7 @@ export async function updateDoctor(formData: FormData) {
 
   await connectDB();
   const exists = await User.findOne({ email, _id: { $ne: id } });
-  if (exists) return { error: "Another user don use this email" };
+  if (exists) return { error: "This email is already in use by another user" };
 
   const update: any = { name, email, specialty, experience, bio };
   if (pic.image) update.image = pic.image;

@@ -15,20 +15,18 @@ export default function AddDoctorForm() {
     setPreview("");
     if (!file) return;
 
-    // Validation 1 - must be image
     if (!file.type.startsWith("image/")) {
       setPicError("Pic must be image file");
       e.target.value = "";
       return;
     }
-    // Validation 2 - only jpg, png, webp
     const allowed = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
     if (!allowed.includes(file.type)) {
       setPicError("Only JPG, PNG or WEBP allowed");
       e.target.value = "";
       return;
     }
-    // Validation 3 - max 2MB
+
     if (file.size > 2 * 1024 * 1024) {
       setPicError("Pic too big - max 2MB. Pick smaller pic.");
       e.target.value = "";
@@ -60,7 +58,6 @@ export default function AddDoctorForm() {
         <option>General Practitioner</option><option>Dentist</option><option>Cardiologist</option><option>Dermatologist</option><option>Pediatrician</option><option>Gynecologist</option>
       </select>
 
-      {/* PIC UPLOAD - with validation */}
       <div className="sm:col-span-2 bg-slate-900 border border-slate-700 rounded-xl p-3">
         <label className="text-slate-400 text-xs font-bold">Doctor Picture (Optional - JPG, PNG, WEBP, max 2MB)</label>
         <div className="flex items-center gap-3 mt-2">

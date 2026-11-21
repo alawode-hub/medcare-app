@@ -64,16 +64,16 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         <div className="bg-slate-800 p-4 rounded-2xl border border-slate-700"><p className="text-slate-400 text-sm">Total Patients</p><p className="text-white text-2xl font-bold">{totalPatients}</p></div>
 
         <Link href="/admin?tab=appointments&status=all" className={statCard(activeTab === "appointments" && activeStatus === "all", "border-white ring-white")}>
-          <p className="text-slate-400 text-sm">Total Appts ↗</p><p className="text-white text-2xl font-bold">{total}</p>
+          <p className="text-slate-400 text-sm">Total Appointments </p><p className="text-white text-2xl font-bold">{total}</p>
         </Link>
         <Link href="/admin?tab=appointments&status=pending" className={statCard(activeTab === "appointments" && activeStatus === "pending", "border-yellow-300 ring-yellow-300")}>
-          <p className="text-slate-400 text-sm">Pending ↗</p><p className="text-yellow-300 text-2xl font-bold">{pending}</p>
+          <p className="text-slate-400 text-sm">Pending </p><p className="text-yellow-300 text-2xl font-bold">{pending}</p>
         </Link>
         <Link href="/admin?tab=appointments&status=completed" className={statCard(activeTab === "appointments" && activeStatus === "completed", "border-green-300 ring-green-300")}>
-          <p className="text-slate-400 text-sm">Completed ↗</p><p className="text-green-300 text-2xl font-bold">{completed}</p>
+          <p className="text-slate-400 text-sm">Completed </p><p className="text-green-300 text-2xl font-bold">{completed}</p>
         </Link>
         <Link href="/admin?tab=appointments&status=cancelled" className={statCard(activeTab === "appointments" && activeStatus === "cancelled", "border-red-400 ring-red-400")}>
-          <p className="text-slate-400 text-sm">Rejected ↗</p><p className="text-red-300 text-2xl font-bold">{rejected}</p>
+          <p className="text-slate-400 text-sm">Rejected </p><p className="text-red-300 text-2xl font-bold">{rejected}</p>
         </Link>
       </div>
 
@@ -87,7 +87,6 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         <div className="grid gap-4 mt-6">
           <AddDoctorForm />
 
-          {/* FIX PICTURES - This one go ALWAYS show, even if you get 6 doctors */}
           <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-4 flex justify-between items-center flex-wrap gap-3">
             <div>
               <p className="text-white font-bold text-sm">Fix Doctor Pictures</p>

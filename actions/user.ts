@@ -18,14 +18,14 @@ export async function registerUser(prevState: any, formData: FormData) {
 
   await connectDB();
   const exists = await User.findOne({ email: email.toLowerCase().trim() });
-  if (exists) return { error: "Email don register before. Go login." };
+  if (exists) return { error: "Email has been registered before. Go login." };
 
   const hashed = await bcrypt.hash(password, 10);
   await User.create({
     name: name.trim(),
     email: email.toLowerCase().trim(),
     password: hashed,
-    role: "patient", // everybody wey register na patient, no be admin
+    role: "patient", 
   });
 
   return { success: "Account created successfully! Redirecting you to login..." };
@@ -44,8 +44,7 @@ export async function loginUser(prevState: any, formData: FormData) {
   const isCorrect = await bcrypt.compare(password, user.password);
   if (!isCorrect) return { error: "Wrong password" };
 
-  // DoctorId = user._id if role is doctor, so doctor dashboard go show only him appointments
-  // You need to set doctorId for doctors in DB to "1" - "6" to match your doctors.ts, or use _id
+ 
   (await cookies()).set("medcare_user", JSON.stringify({
     id: user._id.toString(),
     name: user.name,

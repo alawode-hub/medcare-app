@@ -5,7 +5,6 @@ export default function Navbar({ user }: { user?: any }) {
   const first = clean.split(" ")[0] || "";
   const hiName = user?.role === "doctor" ? `Dr. ${first}` : first;
 
-  // --- FIX: Show correct dashboard per role ---
   const dashboardLink =
     user?.role === "admin" ? { href: "/admin", label: "Admin" } :
     user?.role === "doctor" ? { href: "/doctor", label: "Doctor" } :

@@ -25,7 +25,7 @@ export default async function Dashboard() {
       {active.length === 0 ? (
         <div className="bg-slate-800 rounded-2xl p-6 mt-6 border border-slate-700">
           <p className="font-bold text-white">No appointments yet</p>
-          <p className="text-slate-400 text-sm mt-1">Go book one from Doctors page. E go save for real database now.</p>
+          <p className="text-slate-400 text-sm mt-1">Go and book one from Doctors page. </p>
           <Link href="/doctors" className="inline-block bg-teal-400 text-slate-900 font-bold px-5 py-2.5 rounded-lg mt-4 text-sm">Find a Doctor →</Link>
         </div>
       ) : (

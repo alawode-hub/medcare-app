@@ -23,12 +23,12 @@ export async function bookAppointment(formData: FormData) {
   }
 
   if (!reason.trim()) {
-    return { error: "Abeg type reason for visit - wetin dey worry you?" };
+    return { error: "Kindly state the reason for your visit" };
   }
 
   const today = new Date().toISOString().split("T")[0];
   if (date < today) {
-    return { error: "You no fit book past date" };
+    return { error: "You cannot book an appointment for a past date" };
   }
 
   await connectDB();
@@ -41,7 +41,7 @@ export async function bookAppointment(formData: FormData) {
   });
 
   if (alreadyBooked) {
-    return { error: "This time don book already. Pick another time." };
+    return { error: "This particular time is already booked. Pick another time." };
   }
 
   await Appointment.create({
@@ -131,9 +131,9 @@ export async function cancelAppointment(id: string) {
 
   await connectDB();
   const appt = await Appointment.findById(id);
-  if (!appt) return { error: "Appointment no dey" };
+  if (!appt) return { error: " No Appointment " };
   if (appt.patientId !== user.id) {
-    return { error: "You no fit cancel another person appointment" };
+    return { error: "You cannot cancel another person appointment" };
   }
 
   appt.status = "cancelled";
@@ -158,7 +158,7 @@ export async function updateAppointment(formData: FormData) {
   }
 
   if (!reason.trim()) {
-    return { error: "Abeg type reason for visit - wetin dey worry you?" };
+    return { error: "Kindly state the reason for your visit" };
   }
 
   const today = new Date().toISOString().split("T")[0];
@@ -170,7 +170,7 @@ export async function updateAppointment(formData: FormData) {
   const appt = await Appointment.findById(id);
   if (!appt) return { error: "Appointment no dey" };
   if (appt.patientId !== user.id) {
-    return { error: "You no fit edit another person appointment" };
+    return { error: "You can't edit another person appointment" };
   }
 
   if (appt.date !== date || appt.time !== time) {
@@ -182,7 +182,7 @@ export async function updateAppointment(formData: FormData) {
       status: { $ne: "cancelled" },
     });
     if (clash) {
-      return { error: "This new time don book already. Pick another time." };
+      return { error: "This particular time is already booked. Pick another time." };
     }
   }
 
