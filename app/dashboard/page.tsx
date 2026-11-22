@@ -24,11 +24,9 @@ export default async function Dashboard() {
       <h1 className="text-2xl sm:text-3xl font-bold mt-1 text-white">Welcome, {user.name}</h1>
       <p className="text-slate-400 text-sm mt-1">You have {active.length} active appointment(s).</p>
 
-      <div className="grid grid-cols-3 gap-2 sm:gap-3 mt-4">
-        <Link href="/book" className="bg-teal-400 text-slate-900 font-bold text-xs sm:text-sm text-center py-3 rounded-xl">Book Appointment</Link>
-        <Link href="/doctors" className="bg-slate-800 border border-slate-700 text-white font-bold text-xs sm:text-sm text-center py-3 rounded-xl">Find Doctors</Link>
-        <Link href="/chat" className="bg-slate-800 border border-slate-700 text-white font-bold text-xs sm:text-sm text-center py-3 rounded-xl">Chat</Link>
-      </div>
+      <Link href="/book" className="block bg-teal-400 text-slate-900 font-bold text-sm text-center py-3 rounded-xl mt-4">
+        Book Appointment
+      </Link>
 
       {active.length === 0 ? (
         <div className="bg-slate-800 rounded-2xl p-5 mt-6 border border-slate-700">
