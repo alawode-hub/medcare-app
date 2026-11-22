@@ -131,9 +131,9 @@ export async function cancelAppointment(id: string) {
 
   await connectDB();
   const appt = await Appointment.findById(id);
-  if (!appt) return { error: " No Appointment " };
+  if (!appt) return { error: "No Appointment found" };
   if (appt.patientId !== user.id) {
-    return { error: "You cannot cancel another person appointment" };
+    return { error: "You cannot cancel another person's appointment" };
   }
 
   appt.status = "cancelled";
@@ -163,14 +163,14 @@ export async function updateAppointment(formData: FormData) {
 
   const today = new Date().toISOString().split("T")[0];
   if (date < today) {
-    return { error: "You no fit pick past date" };
+    return { error: "You cannot pick a past date" };
   }
 
   await connectDB();
   const appt = await Appointment.findById(id);
-  if (!appt) return { error: "Appointment no dey" };
+  if (!appt) return { error: "Appointment not found" };
   if (appt.patientId !== user.id) {
-    return { error: "You can't edit another person appointment" };
+    return { error: "You cannot edit another person's appointment" };
   }
 
   if (appt.date !== date || appt.time !== time) {
@@ -193,5 +193,24 @@ export async function updateAppointment(formData: FormData) {
 
   revalidatePath("/dashboard");
   revalidatePath(`/doctors/${appt.doctorId}`);
+  return { success: true };
+}
+
+export async function deleteCancelledAppointment(id: string) {
+  await connection();
+  const user = await getCurrentUser();
+  if (!user) return { success: false, message: "Please log in" };
+
+  await connectDB();
+
+  const deleted = await Appointment.findOneAndDelete({
+    _id: id,
+    patientId: user.id,
+    status: "cancelled",
+  });
+
+  if (!deleted) return { success: false, message: "Appointment not found or not cancelled" };
+
+  revalidatePath("/dashboard");
   return { success: true };
 }
