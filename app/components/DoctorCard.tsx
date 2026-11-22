@@ -19,10 +19,8 @@ export default function DoctorCard({ doctor }: { doctor: any }) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-           <div className="w-full h-full bg-linear-to-br from-teal-400 to-slate-700 flex items-center justify-center">  
-           <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center text-slate-900 font-bold text-4xl">  </div>
-         
-              {initial}
+          <div className="w-full h-full bg-linear-to-br from-teal-400 to-slate-700 flex items-center justify-center">
+            <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center text-slate-900 font-bold text-4xl">{initial}</div>
           </div>
         )}
       </div>
