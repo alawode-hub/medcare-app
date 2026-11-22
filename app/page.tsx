@@ -1,16 +1,31 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import {
+  Stethoscope,
+  Smile,
+  HeartPulse,
+  Sparkles,
+  Baby,
+  Heart,
+  Search,
+  CalendarCheck,
+  Clock,
+  BadgeCheck,
+  Calendar,
+  Users,
+  ArrowRight,
+} from "lucide-react";
 import DoctorCard from "./components/DoctorCard";
 import { doctors } from "./data/doctors";
 
 const specialties = [
-  ["General Practitioner", "Check-ups and everyday care", "1 doctor", "🩺"],
-  ["Dentist", "Cleanings, fillings and braces", "1 doctor", "🦷"],
-  ["Cardiologist", "Heart health and blood pressure", "1 doctor", "❤️"],
-  ["Dermatologist", "Skin, hair and nails", "1 doctor", "💧"],
-  ["Pediatrician", "Care for babies and children", "1 doctor", "😊"],
-  ["Gynecologist", "Women's health and pregnancy", "1 doctor", "♀️"],
+  { title: "General Practitioner", desc: "Check-ups and everyday care", count: "1 doctor", Icon: Stethoscope },
+  { title: "Dentist", desc: "Cleanings, fillings and braces", count: "1 doctor", Icon: Smile },
+  { title: "Cardiologist", desc: "Heart health and blood pressure", count: "1 doctor", Icon: HeartPulse },
+  { title: "Dermatologist", desc: "Skin, hair and nails", count: "1 doctor", Icon: Sparkles },
+  { title: "Pediatrician", desc: "Care for babies and children", count: "1 doctor", Icon: Baby },
+  { title: "Gynecologist", desc: "Women's health and pregnancy", count: "1 doctor", Icon: Heart },
 ];
 
 function clean(text: string) {
@@ -48,7 +63,7 @@ export default function Home() {
             <h1 className="text-3xl sm:text-5xl font-bold mt-3 leading-tight text-white">Quality Healthcare,<br />Made Simple</h1>
             <p className="text-slate-400 mt-4 text-sm sm:text-base">Find a trusted doctor, see real open times and book your visit in under a minute. No phone calls and no waiting on hold.</p>
             <div className="flex flex-col sm:flex-row gap-3 mt-6">
-              <Link href={doctorsLink} className="bg-teal-400 text-slate-900 font-bold px-5 py-3 rounded-lg text-sm text-center">Find a Doctor →</Link>
+              <Link href={doctorsLink} className="bg-teal-400 text-slate-900 font-bold px-5 py-3 rounded-lg text-sm text-center flex items-center justify-center gap-1">Find a Doctor <ArrowRight size={16} /></Link>
               <a href="#how-it-works" className="bg-slate-800 px-5 py-3 rounded-lg text-sm font-bold border border-slate-700 text-white text-center">How it works</a>
             </div>
           </div>
@@ -100,9 +115,9 @@ export default function Home() {
               <p className="text-teal-400 text-sm font-bold tracking-widest">POPULAR SPECIALTIES</p>
               <h2 className="text-2xl font-bold mt-1 text-white">Who do you need to see?</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-                {specialties.map(([title, desc, count, icon]) => (
-                  <button key={title} onClick={() => setSpecialty(title)} className="bg-slate-800 p-5 rounded-2xl border border-slate-700 text-left">
-                    <span className="bg-teal-400 text-slate-900 w-8 h-8 flex items-center justify-center rounded-lg">{icon}</span>
+                {specialties.map(({ title, desc, count, Icon }) => (
+                  <button key={title} onClick={() => setSpecialty(title)} className="bg-slate-800 p-5 rounded-2xl border border-slate-700 text-left hover:border-teal-400/50 transition">
+                    <span className="bg-teal-400 text-slate-900 w-9 h-9 flex items-center justify-center rounded-lg"><Icon size={19} strokeWidth={2.2} /></span>
                     <p className="font-bold mt-3 text-white">{title}</p><p className="text-slate-400 text-sm">{desc}</p><p className="text-slate-400 text-xs mt-2">{count}</p>
                   </button>
                 ))}
@@ -115,7 +130,7 @@ export default function Home() {
                   <p className="text-teal-400 text-sm font-bold tracking-widest">FEATURED DOCTORS</p>
                   <h2 className="text-2xl font-bold mt-1 text-white">Experienced and ready to help</h2>
                 </div>
-                <Link href={doctorsLink} className="text-sm text-teal-400 font-bold shrink-0">See all doctors →</Link>
+                <Link href={doctorsLink} className="text-sm text-teal-400 font-bold shrink-0 flex items-center gap-1">See all doctors <ArrowRight size={15} /></Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
                 {doctors.map((d) => <DoctorCard key={d.id} doctor={d} />)}
@@ -127,19 +142,19 @@ export default function Home() {
               <h2 className="text-2xl font-bold mt-1 text-white">Three steps to your appointment</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
                 <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700">
-                  <span className="bg-teal-400 text-slate-900 w-10 h-10 flex items-center justify-center rounded-lg text-lg">🔍</span>
+                  <span className="bg-teal-400 text-slate-900 w-10 h-10 flex items-center justify-center rounded-lg"><Search size={20} /></span>
                   <p className="text-teal-400 text-xs font-bold mt-4">STEP 1</p>
                   <p className="font-bold mt-1 text-white text-lg">Find a doctor</p>
                   <p className="text-slate-400 text-sm mt-1">Search by name or browse by specialty to find the right doctor for you.</p>
                 </div>
                 <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700">
-                  <span className="bg-teal-400 text-slate-900 w-10 h-10 flex items-center justify-center rounded-lg text-lg">📅</span>
+                  <span className="bg-teal-400 text-slate-900 w-10 h-10 flex items-center justify-center rounded-lg"><CalendarCheck size={20} /></span>
                   <p className="text-teal-400 text-xs font-bold mt-4">STEP 2</p>
                   <p className="font-bold mt-1 text-white text-lg">Book an appointment</p>
                   <p className="text-slate-400 text-sm mt-1">Pick an open date and time, add a short reason and confirm.</p>
                 </div>
                 <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700">
-                  <span className="bg-teal-400 text-slate-900 w-10 h-10 flex items-center justify-center rounded-lg text-lg">🩺</span>
+                  <span className="bg-teal-400 text-slate-900 w-10 h-10 flex items-center justify-center rounded-lg"><Stethoscope size={20} /></span>
                   <p className="text-teal-400 text-xs font-bold mt-4">STEP 3</p>
                   <p className="font-bold mt-1 text-white text-lg">Visit your doctor</p>
                   <p className="text-slate-400 text-sm mt-1">Turn up at your time. Your appointment stays on your dashboard.</p>
@@ -153,22 +168,22 @@ export default function Home() {
               <p className="text-slate-400 text-sm mt-2">We show only real open times, so the slot you pick is the slot you get. Manage every visit from one place and cancel when plans change.</p>
               <div className="bg-teal-400/10 border border-teal-400/20 rounded-2xl p-5 mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700">
-                  <span className="bg-teal-400 text-slate-900 w-8 h-8 flex items-center justify-center rounded-lg">🕐</span>
+                  <span className="bg-teal-400 text-slate-900 w-9 h-9 flex items-center justify-center rounded-lg"><Clock size={18} /></span>
                   <p className="font-bold mt-3 text-white">Real open times</p>
                   <p className="text-slate-400 text-sm mt-1">Booked slots disappear instantly, so nobody is double-booked.</p>
                 </div>
                 <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700">
-                  <span className="bg-teal-400 text-slate-900 w-8 h-8 flex items-center justify-center rounded-lg">✓</span>
+                  <span className="bg-teal-400 text-slate-900 w-9 h-9 flex items-center justify-center rounded-lg"><BadgeCheck size={18} /></span>
                   <p className="font-bold mt-3 text-white">Verified doctors</p>
                   <p className="text-slate-400 text-sm mt-1">Every doctor profile lists their qualifications and experience.</p>
                 </div>
                 <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700">
-                  <span className="bg-teal-400 text-slate-900 w-8 h-8 flex items-center justify-center rounded-lg">📅</span>
+                  <span className="bg-teal-400 text-slate-900 w-9 h-9 flex items-center justify-center rounded-lg"><Calendar size={18} /></span>
                   <p className="font-bold mt-3 text-white">Easy to manage</p>
                   <p className="text-slate-400 text-sm mt-1">See upcoming visits and cancel in one tap.</p>
                 </div>
                 <div className="bg-slate-800 p-5 rounded-2xl border border-slate-700">
-                  <span className="bg-teal-400 text-slate-900 w-8 h-8 flex items-center justify-center rounded-lg">👤</span>
+                  <span className="bg-teal-400 text-slate-900 w-9 h-9 flex items-center justify-center rounded-lg"><Users size={18} /></span>
                   <p className="font-bold mt-3 text-white">Made for everyone</p>
                   <p className="text-slate-400 text-sm mt-1">Patients, doctors and clinic admins each get a simple dashboard.</p>
                 </div>
@@ -179,4 +194,4 @@ export default function Home() {
       </div>
     </div>
   );
-}   
+}
