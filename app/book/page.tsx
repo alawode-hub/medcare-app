@@ -51,7 +51,7 @@ async function BookForm({ doctorId }: { doctorId: string }) {
 
         <div>
           <label className="text-slate-400 text-xs">Reason</label>
-          <textarea name="reason" required placeholder="Wetin you wan see doctor for?" className="w-full mt-1 bg-slate-900 border border-slate-700 p-3 rounded-xl text-white text-sm" />
+          <textarea name="reason" required placeholder="State your reason" className="w-full mt-1 bg-slate-900 border border-slate-700 p-3 rounded-xl text-white text-sm" />
         </div>
 
         <button className="w-full bg-teal-400 text-slate-900 font-bold py-3 rounded-xl text-sm">Confirm Booking</button>
