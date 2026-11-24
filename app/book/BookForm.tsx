@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { bookAppointment } from "@/actions/appointment";
 
 const TIME_SLOTS = ["9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM"];
 
 export default function BookForm({ doctors, doctorId }: { doctors: any[]; doctorId: string }) {
+  const router = useRouter();
   const [selectedId, setSelectedId] = useState(doctorId || doctors[0]?.id || "");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [time, setTime] = useState("");
@@ -23,6 +25,7 @@ export default function BookForm({ doctors, doctorId }: { doctors: any[]; doctor
       setError("Please select a time");
       return;
     }
+    if (loading) return;
     setLoading(true);
 
     const formData = new FormData();
@@ -37,7 +40,11 @@ export default function BookForm({ doctors, doctorId }: { doctors: any[]; doctor
     if (result?.error) {
       setError(result.error);
       setLoading(false);
+      return;
     }
+
+    router.push("/dashboard");
+    router.refresh();
   }
 
   return (

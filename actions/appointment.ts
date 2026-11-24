@@ -59,7 +59,7 @@ export async function bookAppointment(formData: FormData) {
 
   revalidatePath("/dashboard");
   revalidatePath(`/doctors/${doctorId}`);
-  redirect("/dashboard");
+  return { success: true };
 }
 
 export async function updateAppointmentStatus(formData: FormData): Promise<void> {
