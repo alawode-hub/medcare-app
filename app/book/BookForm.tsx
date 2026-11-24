@@ -36,15 +36,24 @@ export default function BookForm({ doctors, doctorId }: { doctors: any[]; doctor
     formData.append("time", time);
     formData.append("reason", reason);
 
-    const result = await bookAppointment(formData);
-    if (result?.error) {
-      setError(result.error);
-      setLoading(false);
-      return;
-    }
+    try {
+      const result = await Promise.race([
+        bookAppointment(formData),
+        new Promise((resolve) => setTimeout(() => resolve({ timeout: true }), 3000)),
+      ]) as any;
 
-    router.push("/dashboard");
-    router.refresh();
+      if (result?.error) {
+        setError(result.error);
+        setLoading(false);
+        return;
+      }
+
+      router.push("/dashboard");
+      router.refresh();
+    } catch (err) {
+      router.push("/dashboard");
+      router.refresh();
+    }
   }
 
   return (
